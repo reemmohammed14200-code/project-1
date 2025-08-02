@@ -71,17 +71,6 @@ A mobile-style web application designed for truck drivers to securely request tr
 5. Submit request
 6. View route map with details
 
-## Route Information
-
-The application includes pre-configured routes across Saudi Arabia:
-
-| Route | Start | End | Distance | Duration |
-|-------|-------|-----|----------|----------|
-| North Highway | Riyadh | Dammam | 450 km | 4-5 hours |
-| South Highway | Riyadh | Mecca | 850 km | 8-9 hours |
-| East Highway | Riyadh | Dammam | 450 km | 4-5 hours |
-| West Highway | Riyadh | Jeddah | 950 km | 9-10 hours |
-
 ## Security Features
 
 ### Face Verification
@@ -95,13 +84,6 @@ The application includes pre-configured routes across Saudi Arabia:
 - No external server communication
 - Camera access only when needed
 - Automatic data cleanup on logout
-
-## Browser Compatibility
-
-- ✅ Chrome 60+
-- ✅ Firefox 55+
-- ✅ Safari 12+
-- ✅ Edge 79+
 
 ## File Structure
 
@@ -213,5 +195,6 @@ This project is open source and available under the MIT License.
 For technical support or feature requests, please create an issue in the project repository.
 
 ---
+
 
 **Note**: This application is designed for demonstration purposes. For production use, implement additional security measures and backend services as required by your organization's security policies. 
