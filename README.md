@@ -1,200 +1,153 @@
-# Truck Driver Permit System
+# 🚛 Truck Driver Permit System
 
-A mobile-style web application designed for truck drivers to securely request travel permits with face verification and real-time route mapping.
+A mobile-style web application for truck drivers to securely request travel permits, verify identity via face recognition, and view real-time route maps across Saudi Arabia. Designed with a dark theme and full mobile responsiveness for on-the-go use.
 
-## Features
+---
+
+## 🌟 Features
 
 ### 🔐 Secure Authentication
-- **Driver Registration**: Complete profile creation with photo capture
-- **Face Verification**: Biometric login using camera and stored photos
-- **Local Storage**: All data stored securely in browser localStorage
+- **Driver Registration**: Collects name, ID, truck number, cargo type, and a captured photo.
+- **Face Verification**: Uses `face-api.js` to match the live camera feed with stored facial data.
+- **Local Storage**: Data is securely saved in the browser without any external server calls.
 
-### 📱 Mobile-Optimized Design
-- **Responsive UI**: Dark theme optimized for mobile devices
-- **Touch-Friendly**: Large buttons and intuitive navigation
-- **Camera Integration**: Built-in photo capture and face detection
+### 📱 Mobile-Optimized Interface
+- **Dark Themed UI** with touch-friendly buttons.
+- **Responsive Design**: Fully functional on mobile browsers.
+- **Camera Integration** for registration and login.
 
-### 🗺️ Route Management
-- **Interactive Maps**: Real-time route display using Leaflet.js
-- **Multiple Routes**: Pre-configured highway routes across Saudi Arabia
-- **Location Services**: GPS integration for current location tracking
+### 🗺️ Route & Permit Management
+- **Interactive Map** using `Leaflet.js` to display trip routes.
+- **GPS Tracking**: Accesses current location for route generation.
+- **Permit Scheduling**: Allows drivers to request permits with selected time slots and trip purposes.
+- **Trip History**: View past requests and statuses.
 
-### 📋 Permit System
-- **Time Slot Selection**: Flexible scheduling options
-- **Route Planning**: Visual route display with distance and duration
-- **History Tracking**: Complete permit request history
+---
 
-## Technology Stack
+## 🧰 Tech Stack
 
-- **Frontend**: HTML5, CSS3, JavaScript (ES6+)
-- **Face Detection**: face-api.js for biometric verification
-- **Maps**: Leaflet.js for interactive route mapping
-- **Storage**: Browser localStorage for data persistence
-- **Styling**: Modern CSS with gradients and animations
+| Layer       | Tools / Libraries            |
+|-------------|------------------------------|
+| Frontend    | HTML5, CSS3, JavaScript ES6+ |
+| Mapping     | Leaflet.js, OpenStreetMap    |
+| Face Auth   | face-api.js                  |
+| Storage     | LocalStorage (in-browser)    |
+| Styling     | CSS + media queries          |
 
-## Getting Started
+---
 
-### Prerequisites
-- Modern web browser with camera access
-- HTTPS connection (required for camera access)
-- JavaScript enabled
+## 🗂️ File Structure
 
-### Installation
-1. Clone or download the project files
-2. Open `index.html` in a web browser
-3. Allow camera permissions when prompted
+```
+ASIR/
+├── model/                         # Face recognition models
+├── models/                        # Additional model files
+├── configs.js                     # Configuration and constants (ensure keys are removed before sharing)
+├── face-api.js / .min.js          # Face recognition library
+├── index.html                    # Landing & login page
+├── index_1.html                  # Alternate dashboard layout
+├── manage.html / manage.js       # Manage permits & user data
+├── map.html                      # Live map view
+├── upload.js                     # Handles photo uploads
+├── script.js                     # Main logic
+├── style_1.css / styles.css      # UI styling
+└── README.md                     # Project documentation
+```
 
-### Usage
+---
 
-#### Registration Process
-1. Click "Register" on the welcome screen
-2. Fill in driver details:
-   - Full Name
-   - National ID
-   - Truck Number
-   - Cargo Type
-3. Capture a photo using the camera
-4. Submit registration
+## 🚀 How to Run
 
-#### Login Process
-1. Click "Login" on the welcome screen
-2. Enter your National ID
-3. Start camera and capture a photo
-4. Complete face verification
-5. Access your dashboard
+### ✅ Prerequisites
+- Modern browser (Chrome/Edge/Firefox)
+- HTTPS access (required for camera)
+- Allow camera permissions
 
-#### Requesting Permits
-1. From the dashboard, click "Request New Permit"
-2. Select date and time slot
-3. Choose your route
-4. Add trip purpose (optional)
-5. Submit request
-6. View route map with details
+### 🧪 Quick Start
 
-## Security Features
+1. Clone or download this repo.
+2. Open `index.html` in your browser.
+3. Register or log in using National ID and facial scan.
+4. Access your dashboard, request permits, and view routes.
+
+---
+
+## 📝 How It Works
 
 ### Face Verification
-- Uses face-api.js for facial landmark detection
-- Compares stored photos with live camera feed
-- Configurable similarity threshold (currently 60%)
-- Secure local processing (no external API calls)
-
-### Data Privacy
-- All data stored locally in browser
-- No external server communication
-- Camera access only when needed
-- Automatic data cleanup on logout
-
-## File Structure
-
-```
-truck-driver-permit/
-├── index.html          # Main application file
-├── styles.css          # Styling and responsive design
-├── script.js           # Application logic and functionality
-└── README.md           # Project documentation
-```
-
-## API Dependencies
-
-### External Libraries (CDN)
-- **face-api.js**: Face detection and recognition
-- **Leaflet.js**: Interactive mapping
-- **OpenStreetMap**: Map tiles and data
-
-## Development Notes
-
-### Face Detection Implementation
-The application uses a simplified face similarity algorithm:
 - Detects 68 facial landmarks
-- Calculates Euclidean distance between corresponding points
-- Converts distance to similarity score (0-1)
-- Uses 0.6 threshold for verification
+- Measures similarity via Euclidean distance
+- Accepts match if similarity > 60%
+- All verification is performed **locally**
 
-### Local Storage Schema
-```javascript
-// Driver data
-truckDrivers: {
-  [nationalId]: {
-    name: string,
-    nationalId: string,
-    truckNumber: string,
-    cargoType: string,
-    photo: string (base64)
+### Permit Data Structure
+
+```js
+truckDrivers = {
+  "1234567890": {
+    name: "Ahmed",
+    nationalId: "1234567890",
+    truckNumber: "TRK-001",
+    cargoType: "Food",
+    photo: "base64string"
   }
 }
 
-// Permit requests
-permits: [
+permits = [
   {
-    id: string,
-    date: string,
-    timeSlot: string,
-    route: string,
-    purpose: string,
-    status: 'pending'|'approved'|'rejected',
-    driverId: string,
-    driverName: string,
-    timestamp: string
+    id: "P001",
+    date: "2025-08-03",
+    timeSlot: "10:00 AM",
+    route: "Abha → Riyadh",
+    purpose: "Delivery",
+    driverId: "1234567890",
+    status: "approved"
   }
 ]
 ```
 
-## Customization
+---
 
-### Adding New Routes
-1. Update route data in `addRouteToMap()` function
-2. Add route options to HTML select element
-3. Update helper functions (`getRouteName`, `getRouteDistance`, `getRouteDuration`)
+## 🛠️ Customization
 
-### Modifying Face Verification
-1. Adjust similarity threshold in `verifyFace()` function
-2. Implement more sophisticated comparison algorithms
-3. Add additional security measures as needed
+### Add New Route
+- Update `map.html` and `script.js`:
+  - Add new coordinates to the route list.
+  - Update the select dropdown and render logic.
 
-### Styling Changes
-- Modify CSS variables for color scheme
-- Update animations and transitions
-- Adjust responsive breakpoints
-
-## Troubleshooting
-
-### Camera Issues
-- Ensure HTTPS connection
-- Check browser permissions
-- Try refreshing the page
-- Verify camera is not in use by other applications
-
-### Face Detection Problems
-- Ensure good lighting conditions
-- Position face clearly in camera view
-- Check if face-api.js models loaded successfully
-- Try capturing photo again
-
-### Map Display Issues
-- Check internet connection for map tiles
-- Verify Leaflet.js loaded correctly
-- Ensure location services are enabled
-
-## Future Enhancements
-
-- [ ] Backend integration for data persistence
-- [ ] Real-time permit status updates
-- [ ] Advanced route optimization
-- [ ] Multi-language support
-- [ ] Offline functionality
-- [ ] Push notifications
-- [ ] Driver analytics dashboard
-
-## License
-
-This project is open source and available under the MIT License.
-
-## Support
-
-For technical support or feature requests, please create an issue in the project repository.
+### Modify Verification
+- Change similarity threshold in `configs.js`.
+- Extend `verifyFace()` in `script.js` for more advanced checks.
 
 ---
 
+## 🧩 Known Issues
 
-**Note**: This application is designed for demonstration purposes. For production use, implement additional security measures and backend services as required by your organization's security policies. 
+| Issue                | Fix Suggestion                                  |
+|---------------------|--------------------------------------------------|
+| Camera not working  | Check HTTPS, browser permissions, or try refresh |
+| Face not detected   | Improve lighting and keep face centered          |
+| Map not loading     | Check Leaflet CDN and internet connection        |
+
+---
+
+## 🌍 Future Plans
+
+- [ ] Connect to backend for real-time database
+- [ ] Admin panel for reviewing permits
+- [ ] Offline functionality with service workers
+- [ ] Multi-language support (Arabic / English)
+- [ ] Push notifications via PWA
+- [ ] Heatmap of driver activity
+
+---
+
+## 📄 License
+
+MIT License — Free for educational and non-commercial use.
+
+---
+
+## 🙋 Support
+
+For feedback or technical issues, please [open an issue](https://github.com/reemmohammed14200-code/project-1/issues) in the repository.
