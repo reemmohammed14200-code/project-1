@@ -1,0 +1,37 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>إدارة البيانات</title>
+    <link rel="stylesheet" href="style_1.css">
+</head>
+<body>
+    <h2>📋 بيانات الهوية المستخرجة</h2>
+    <table id="dataTable">
+        <thead>
+            <tr>
+                <th>صورة الوثيقة</th>
+                <th>الاسم الأول</th>
+                <th>الثاني</th>
+                <th>الثالث</th>
+                <th>الأخير</th>
+                <th>رقم الهوية</th>
+                <th>العمر</th>
+                <th>القيود</th>
+                <th>حالة سريان الرخصة</th>
+                <th>النوع</th>
+                <th>حفظ</th>
+                <th>حذف</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+    <div style="text-align:center; margin-top: 30px;">
+    <button onclick="location.href='map.html'">Map 🗺️</button>
+    </div>
+
+    <button onclick="exportCSV()">📁 تصدير CSV</button>
+    <script src="manage.js"></script>
+</body>
+</html>

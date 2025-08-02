@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مسيّر</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="face-api.min.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Welcome Screen -->
+        <div id="welcome-screen" class="screen active">
+            <div class="welcome-content">
+                <div class="logo">
+                    <i class="truck-icon">🚛</i>
+                </div>
+                <h1>Truck Driver Permit System</h1>
+                <p>Secure travel permit requests for professional drivers</p>
+                <div class="welcome-buttons">
+                    <button class="btn btn-primary" onclick="showScreen('login-screen') ">Login</button>
+                    <button class="btn btn-secondary" onclick="showScreen('register-screen')">Register</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Registration Screen -->
+        <div id="register-screen" class="screen">
+            <div class="header">
+                <button class="back-btn" onclick="showScreen('welcome-screen')">←</button>
+                <h2>Driver Registration</h2>
+            </div>
+            <div class="form-container">
+                <form id="register-form" autocomplete="off">
+                    <div class="form-group">
+                        <label for="reg-name">Full Name</label>
+                        <input type="text" id="reg-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="reg-national-id">National ID</label>
+                        <input type="text" id="reg-national-id" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="reg-truck-number">Truck Number</label>
+                        <input type="text" id="reg-truck-number" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="reg-cargo-type">Cargo Type</label>
+                        <select id="reg-cargo-type" required>
+                            <option value="">Select cargo type</option>
+                            <option value="general">General Cargo</option>
+                            <option value="hazardous">Hazardous Materials</option>
+                            <option value="refrigerated">Refrigerated</option>
+                            <option value="bulk">Bulk Cargo</option>
+                            <option value="container">Container</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Driver Photo</label>
+                        <div class="photo-capture">
+                            <video id="reg-video" autoplay muted></video>
+                            <canvas id="reg-canvas" style="display: none;"></canvas>
+                            <div class="photo-controls">
+                                <button type="button" class="btn btn-secondary" onclick="startCamera('reg')">Start Camera</button>
+                                <button type="button" class="btn btn-primary" onclick="capturePhoto('reg')">Capture Photo</button>
+                            </div>
+                            <div id="reg-photo-preview" class="photo-preview"></div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full">Register</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Login Screen -->
+        <div id="login-screen" class="screen">
+            <div class="header">
+                <button class="back-btn" onclick="showScreen('welcome-screen')">←</button>
+                <h2>Driver Login</h2>
+            </div>
+            <div class="form-container">
+                <form id="login-form" autocomplete="off">
+                    <div class="form-group">
+                        <label for="login-national-id">National ID</label>
+                        <input type="text" id="login-national-id" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Face Verification</label>
+                        <div class="photo-capture">
+                            <video id="login-video" autoplay muted></video>
+                            <canvas id="login-canvas" style="display: none;"></canvas>
+                            <div class="photo-controls">
+                                <button type="button" class="btn btn-secondary" onclick="startCamera('login')">Start Camera</button>
+                                <button type="button" class="btn btn-primary" onclick="capturePhoto('login')">Capture Photo</button>
+                                <button type="button" class="btn btn-primary" onclick="verifyFace()">Verify Face</button>
+                            </div>
+                            <div id="login-photo-preview" class="photo-preview"></div>
+                            <div id="verification-status" class="verification-status"></div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full">Login</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Driver Dashboard -->
+        <div id="dashboard-screen" class="screen">
+            <div class="header">
+                <h2>Driver Dashboard</h2>
+                <button class="logout-btn" onclick="logout()">Logout</button>
+            </div>
+            <div class="dashboard-content">
+                <div class="driver-info">
+                    <div class="driver-photo">
+                        <img id="driver-photo" src="" alt="Driver Photo">
+                    </div>
+                    <div class="driver-details">
+                        <h3 id="driver-name"></h3>
+                        <p id="driver-national-id"></p>
+                        <p id="driver-truck-number"></p>
+                        <p id="driver-cargo-type"></p>
+                    </div>
+                </div>
+                <div class="dashboard-actions">
+                    <button class="btn btn-primary btn-full" onclick="showScreen('permit-screen')">Request New Permit</button>
+                    <button class="btn btn-secondary btn-full" onclick="showScreen('history-screen')">View History</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Permit Request Screen -->
+        <div id="permit-screen" class="screen">
+            <div class="header">
+                <button class="back-btn" onclick="showScreen('dashboard-screen')">←</button>
+                <h2>Request Permit</h2>
+            </div>
+            <div class="form-container">
+                <form id="permit-form" autocomplete="off">
+                    <div class="form-group">
+                        <label for="permit-date">Date</label>
+                        <input type="date" id="permit-date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="permit-time">Time Slot</label>
+                        <select id="permit-time" required>
+                            <option value="">Select time slot</option>
+                            <option value="06:00-10:00">06:00 - 10:00</option>
+                            <option value="10:00-14:00">10:00 - 14:00</option>
+                            <option value="14:00-18:00">14:00 - 18:00</option>
+                            <option value="18:00-22:00">18:00 - 22:00</option>
+                            <option value="22:00-02:00">22:00 - 02:00</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="permit-route">Route</label>
+                        <select id="permit-route" required>
+                            <option value="">Select route</option>
+                            <option value="north-highway">North Highway (City A → City B)</option>
+                            <option value="south-highway">South Highway (City A → City C)</option>
+                            <option value="east-highway">East Highway (City A → City D)</option>
+                            <option value="west-highway">West Highway (City A → City E)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="permit-purpose">Purpose</label>
+                        <textarea id="permit-purpose" rows="3" placeholder="Describe the purpose of your trip"></textarea>
+                    </div>
+                    <!-- ...existing code... -->
+                    <a href="index_1.html" class="btn btn-primary btn-full">Check Documents</a>
+                    <!-- ...existing code... -->
+                </form>
+            </div>
+        </div>
+
+        <!-- History Screen -->
+        <div id="history-screen" class="screen">
+            <div class="header">
+                <button class="back-btn" onclick="showScreen('dashboard-screen')">←</button>
+                <h2>Permit History</h2>
+            </div>
+            <div class="history-container">
+                <div id="history-list" class="history-list">
+                    <!-- History items will be populated here -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <script defer src="face-api.min.js"></script>
+    <script src="script.js"></script>
+    
+
+</body>
+</html> 
